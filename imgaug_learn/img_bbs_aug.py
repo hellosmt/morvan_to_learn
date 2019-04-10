@@ -1,5 +1,5 @@
 # coding: utf-8
-# 对文件夹里的所有图片进行增强，同时增强bounding box
+# 对文件夹里的所有图片进行增强，同时增强bounding box  
 
 import imgaug as ia
 from imgaug import augmenters as iaa
