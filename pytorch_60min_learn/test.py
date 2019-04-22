@@ -4,6 +4,8 @@ import numpy as np
 # 从数据中直接构建一个张量：
 x = torch.tensor([5.5, 3, 2, 111])
 print("\nx:", x)
+print("\nx的type：", type(x))
+print("\nx的size：", x.size())
 
 # 从已有张量去构建一个新的张量 重用输入张量的属性 除非提供新值 如dtype
 x_new = x.new_ones(5, 3)  # 这种new_*的方法参数为新张量的size
@@ -25,7 +27,7 @@ result = torch.empty(5, 3)
 torch.add(x, y, out=result)
 print("\nx+y...3:", result)
 
-# 原地操作 in-place，任何原地操作改变张量的操作都有一个_后缀
+# 原地操作 in-place，任何原地操作改变张量的操作都有一个_后缀,何可以改变tensor内容的操作都会在方法名后加一个下划线'_'
 y.add_(x)  # 把x加到y上去，这样会改变y的值
 print("\nx+y:...4:", y)
 
@@ -40,27 +42,35 @@ print("\nb:", b)
 
 # 单元素张量使用.item()
 c = torch.rand(1)
-print("\nc:", c)
-print("\nc.item():", c.item())
+print("\nc:", c)  # 这里c是tensor
+print("\nc.item():", c.item())  # 如果是检索tensor的话是返回tensor，用item()取得python number
 
 # numpy桥
 # 将tensor转为numpy数组
 a = torch.ones(5)
-print('\na:', a)
+print('\na1:', a)
 
 b = a.numpy()
-print('\nb:', b)
+print('\nb1:', b)
 
 a.add_(1)
-print('\na:', a)
-print('\nb:', b)  # b也加了1，a和b是共享潜在内存的，a变b也会变
+print('\na1:', a)
+print('\nb1:', b)  # b也加了1，a和b是共享潜在内存的，a变b也会变
 
 # numpy变成tensor
 a = np.ones(5)
 b = torch.from_numpy(a)
-print("\na:", a)
-print('\nb:', b)
+print("\na2:", a)
+print('\nb2:', b)
 np.add(a, 1, out=a)
-print("\na:", a)
-print('\nb:', b)
+print("\na2:", a)
+print('\nb2:', b)
+
+print(torch.__version__)
+
+# tensor在CPU和GPU之间转换
+if torch.cuda.is_available():
+    x = x.cuda()
+    y = y.cuda()
+    x+y
 
