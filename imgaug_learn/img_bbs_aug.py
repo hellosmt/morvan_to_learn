@@ -34,6 +34,7 @@ def create_annotations(rootDir, img_id, new_target, saveDir, num, removeList):
     root = tree.getroot()
     index = 0
     objects = root.findall('object')
+    root.find('filename').text = img_id + "_aug_" + str(num) + ".jpg"
     removeList.reverse()  # 这里倒置是因为删除多个的话，前面的删除了后面就补上来，再删下一个索引就错了，因为索引都变了，所以要倒着删除 https://blog.csdn.net/u012956540/article/details/50816334
     if len(removeList) != 0:
         for id_remove in removeList:  # 这里用removeList.reverse()的话会报错'NoneType' object is not iterable 因为list.reverse()这个函数没有返回值 也就是返回None
@@ -78,21 +79,21 @@ if __name__ == '__main__':  # 啊啊啊啊这里main左右也有两个杠！！
         iaa.Multiply((0.8, 1.2), per_channel=0.2),
         # Apply affine transformations to each image.
         # Scale/zoom them, translate/move them, rotate them and shear them.
-        iaa.Affine(
-            scale={"x": (0.8, 1.2), "y": (0.8, 1.2)},
-            translate_percent={"x": (-0.2, 0.2), "y": (-0.2, 0.2)},
-            rotate=(-15, 15),
-            shear=(-8, 8),
-            #mode=ia.ALL,
-            #cval=(0, 255)
-        )
+        # iaa.Affine(
+        #     scale={"x": (0.8, 1.2), "y": (0.8, 1.2)},
+        #     translate_percent={"x": (-0.2, 0.2), "y": (-0.2, 0.2)},
+        #     rotate=(-15, 15),
+        #     shear=(-8, 8),
+        #     #mode=ia.ALL,
+        #     #cval=(0, 255)
+        # )
     ], random_order=True)  # apply augmenters in random order
 
-    IMG_DIR = "C:\\Users\\sunmengtuo\\Desktop\\program\\城市管理项目\\garbage-img\\"
-    XML_DIR = "C:\\Users\\sunmengtuo\\Desktop\\program\\城市管理项目\\garbage-annotations\\"
-    IMG_AUG_DIR = "C:\\Users\\sunmengtuo\\Desktop\\program\\城市管理项目\\garbage-aug-img\\"
-    XML_AUG_DIR = "C:\\Users\\sunmengtuo\\Desktop\\program\\城市管理项目\\garbage-aug-xml\\"
-    NUM_LOOP = 4  # 每张图片增强NUM_LOOP次
+    IMG_DIR = "/media/sunmengtuo/My Passport 1/城管/图片/分类/cans"
+    XML_DIR = "/media/sunmengtuo/My Passport 1/城管/图片/分类/cans/cans-xml"
+    IMG_AUG_DIR = "/home/sunmengtuo/图片/cans_aug/"
+    XML_AUG_DIR = "/home/sunmengtuo/图片/cans_aug_xml/"
+    NUM_LOOP = 3  # 每张图片增强NUM_LOOP次
 
     imgList = []
     for filename in os.listdir(IMG_DIR):  # os.listdir()列出文件夹下的所有
